@@ -1,0 +1,98 @@
+{
+  "version": 8,
+  "$schema": "https://cmake.org/cmake/help/latest/_downloads/3e2d73bff478d88a7de0de736ba5e361/schema.json",
+  "configurePresets": [
+    {
+      "name": "config-debug-clang",
+      "displayName": "Configure (debug, clang)",
+      "description": "Configure cppinky for building in debug configuration with clang++-20",
+      "binaryDir": "${sourceDir}/build/debug/clang",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_COMPILER": "clang++-20"
+      }
+    },
+    {
+      "name": "config-debug-gcc",
+      "displayName": "Configure (debug, clang)",
+      "description": "Configure cppinky for building in debug configuration with g++-14",
+      "binaryDir": "${sourceDir}/build/debug/clang",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_COMPILER": "g++-14"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "build-debug-clang",
+      "displayName": "Build (debug, clang)",
+      "description": "Build cppinky in debug configuration with clang++-20",
+      "configurePreset": "config-debug-clang"
+    },
+    {
+      "name": "build-debug-gcc",
+      "displayName": "Build (debug, clang)",
+      "description": "Build cppinky in debug configuration with g++-14",
+      "configurePreset": "config-debug-gcc"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test-debug-clang",
+      "displayName": "Test (debug, clang)",
+      "description": "Run unit tests for cppinky built in debug configuration with clang++-20",
+      "configurePreset": "config-debug-clang",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "test-debug-gcc",
+      "displayName": "Test (debug, clang)",
+      "description": "Run unit tests for cppinky built in debug configuration with g++-14",
+      "configurePreset": "config-debug-gcc",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "build-and-test-clang",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "config-debug-clang"
+        },
+        {
+          "type": "build",
+          "name": "build-debug-clang"
+        },
+        {
+          "type": "test",
+          "name": "test-debug-clang"
+        }
+      ]
+    },
+    {
+      "name": "build-and-test-gcc",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "config-debug-gcc"
+        },
+        {
+          "type": "build",
+          "name": "build-debug-gcc"
+        },
+        {
+          "type": "test",
+          "name": "test-debug-gcc"
+        }
+      ]
+    }
+  ]
+}
