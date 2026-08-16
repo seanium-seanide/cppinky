@@ -1,10 +1,45 @@
+# utilities_lib
+
+add_library(utilities_lib)
+
+target_sources(utilities_lib
+  PRIVATE
+    utilities.cpp
+
+  PUBLIC FILE_SET HEADERS
+    BASE_DIRS
+      ${CPPINKY_INCLUDE_DIR}
+    FILES
+      ${CPPINKY_INCLUDE_DIR}/utilities.hpp
+)
+
+target_compile_features(utilities_lib
+  PRIVATE
+    cxx_std_23
+)
+
+target_compile_options(utilities_lib
+  PRIVATE
+    $<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang>:
+      -Wall
+      -Wextra
+      -pedantic
+      -Werror
+      -Wno-missing-field-initializers
+    >
+    $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:
+     /W4
+     /WX
+    >
+)
+
 # cppinky_lib
 
 set(CPPINKY_LIB cppinky_lib)
 
-add_library(${CPPINKY_LIB})
+add_library(cppinky_lib)
 
-target_sources(${CPPINKY_LIB}
+target_sources(cppinky_lib
   PRIVATE
     Interpreter.cpp
 
@@ -15,18 +50,18 @@ target_sources(${CPPINKY_LIB}
       ${CPPINKY_INCLUDE_DIR}/Interpreter.hpp
 )
 
-target_link_libraries(${CPPINKY_LIB}
+target_link_libraries(cppinky_lib
   PRIVATE
     fmt::fmt
     argparse::argparse
 )
 
-target_compile_features(${CPPINKY_LIB}
+target_compile_features(cppinky_lib
   PRIVATE
     cxx_std_23
 )
 
-target_compile_options(${CPPINKY_LIB}
+target_compile_options(cppinky_lib
   PRIVATE
     $<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang>:
       -Wall
@@ -45,24 +80,24 @@ target_compile_options(${CPPINKY_LIB}
 
 set(CPPINKY_EXE cppinky)
 
-add_executable(${CPPINKY_EXE})
+add_executable(cppinky)
 
-target_sources(${CPPINKY_EXE}
+target_sources(cppinky
   PRIVATE
     main.cpp
 )
 
-target_link_libraries(${CPPINKY_EXE}
+target_link_libraries(cppinky
   PRIVATE
-    ${CPPINKY_LIB}
+    cppinky_lib
 )
 
-target_compile_features(${CPPINKY_EXE}
+target_compile_features(cppinky
   PRIVATE
     cxx_std_23
 )
 
-target_compile_options(${CPPINKY_EXE}
+target_compile_options(cppinky
   PRIVATE
     $<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang>:
       -Wall

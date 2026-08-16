@@ -1,24 +1,22 @@
-set(CPPINKY_TESTS cppinky_tests)
+add_executable(cppinky_tests)
 
-add_executable(${CPPINKY_TESTS})
-
-target_sources(${CPPINKY_TESTS}
+target_sources(cppinky_tests
   PRIVATE
     tests.cpp
 )
 
-target_link_libraries(${CPPINKY_TESTS}
+target_link_libraries(cppinky_tests
   PRIVATE
     Catch2::Catch2WithMain
-    ${CPPINKY_LIB}
+    utilities_lib
 )
 
-target_compile_features(${CPPINKY_TESTS}
+target_compile_features(cppinky_tests
   PRIVATE
     cxx_std_23
 )
 
-target_compile_options(${CPPINKY_TESTS}
+target_compile_options(cppinky_tests
   PRIVATE
     $<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang>:
       -Wall
@@ -34,6 +32,6 @@ target_compile_options(${CPPINKY_TESTS}
 )
 
 add_test(
-  NAME    ${CPPINKY_TESTS}
-  COMMAND ${CPPINKY_TESTS}
+  NAME    cppinky_tests
+  COMMAND cppinky_tests
 )
