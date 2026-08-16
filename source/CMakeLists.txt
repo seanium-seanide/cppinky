@@ -54,6 +54,7 @@ target_sources(${CPPINKY_EXE}
 target_link_libraries(${CPPINKY_EXE}
   PRIVATE
     ${CPPINKY_LIB}
+    argparse::argparse
 )
 
 target_compile_features(${CPPINKY_EXE}
