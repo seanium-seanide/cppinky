@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 
 namespace cppinky
 {
@@ -11,6 +13,11 @@ public:
   Interpreter(int argc, char**argv);
 
   int run();
+
+private:
+  std::string m_scriptFileName;
+
+  void parseCommandLineArgs(int argc, char** argv);
 };
 
 }
