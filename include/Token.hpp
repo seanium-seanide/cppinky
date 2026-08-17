@@ -34,7 +34,7 @@ struct Token
 {
   TokenType type;
   std::string lexeme;
-  std::size_t currentLine;
+  std::size_t lineNumber;
 };
 
 auto operator<<(std::ostream& os, const cppinky::Token& token) -> std::ostream&;

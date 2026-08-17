@@ -27,6 +27,7 @@ private:
   size_type m_currentLineIndex{1};
 
   auto skipWhitespace() -> void;
+  auto stepOverComment() -> void;
   auto addToken(TokenType type) -> void;
   auto advance() -> Tokenizer::char_type;
   auto current() -> char_type;

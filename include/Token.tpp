@@ -10,9 +10,10 @@ struct fmt::formatter<cppinky::Token>
   {
     return fmt::format_to(
       context.out()
-    , "[{}, {}]"
+    , "[{}, {}, {}]"
     , magic_enum::enum_name(token.type)
     , token.lexeme
+    , token.lineNumber
     );
   }
 };
