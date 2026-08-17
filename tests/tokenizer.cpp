@@ -16,7 +16,7 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 {
   SECTION("When tokenizing an empty script, an empty sequence of tokens is returned.")
   {
-    auto script = ""s;
+    auto script = "";
     auto tokenizer = Tokenizer{script};
 
     auto result = tokenizer.tokenize();
@@ -43,34 +43,36 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When tokenizing a script, the correct sequence of lexemes is returned")
   {
+    using PairType = std::pair<std::string, std::vector<Token>>;
+
     auto [script, tokens] = GENERATE(
-      std::pair("()[]{}.,+-*/\n"s, std::vector({
-        Token(TokenType::LEFT_PAREN, "(")
-      , Token(TokenType::RIGHT_PAREN, ")")
-      , Token(TokenType::LEFT_SQUARE, "[")
-      , Token(TokenType::RIGHT_SQUARE, "]")
-      , Token(TokenType::LEFT_CURLY, "{")
-      , Token(TokenType::RIGHT_CURLY, "}")
-      , Token(TokenType::DOT, ".")
-      , Token(TokenType::COMMA, ",")
-      , Token(TokenType::PLUS, "+")
-      , Token(TokenType::MINUS, "-")
-      , Token(TokenType::TIMES, "*")
-      , Token(TokenType::DIVIDE, "/")
-      }))
-    , std::pair("**-+-/-+**/\n", std::vector({
-        Token(TokenType::TIMES, "*")
-      , Token(TokenType::TIMES, "*")
-      , Token(TokenType::MINUS, "-")
-      , Token(TokenType::PLUS, "+")
-      , Token(TokenType::MINUS, "-")
-      , Token(TokenType::DIVIDE, "/")
-      , Token(TokenType::MINUS, "-")
-      , Token(TokenType::PLUS, "+")
-      , Token(TokenType::TIMES, "*")
-      , Token(TokenType::TIMES, "*")
-      , Token(TokenType::DIVIDE, "/")
-      }))
+      PairType("()[]{}.,+-*/\n", {
+        {TokenType::LEFT_PAREN, "("}
+      , {TokenType::RIGHT_PAREN, ")"}
+      , {TokenType::LEFT_SQUARE, "["}
+      , {TokenType::RIGHT_SQUARE, "]"}
+      , {TokenType::LEFT_CURLY, "{"}
+      , {TokenType::RIGHT_CURLY, "}"}
+      , {TokenType::DOT, "."}
+      , {TokenType::COMMA, ","}
+      , {TokenType::PLUS, "+"}
+      , {TokenType::MINUS, "-"}
+      , {TokenType::TIMES, "*"}
+      , {TokenType::DIVIDE, "/"}
+      })
+    , PairType("**-+-/-+**/\n", {
+        {TokenType::TIMES, "*"}
+      , {TokenType::TIMES, "*"}
+      , {TokenType::MINUS, "-"}
+      , {TokenType::PLUS, "+"}
+      , {TokenType::MINUS, "-"}
+      , {TokenType::DIVIDE, "/"}
+      , {TokenType::MINUS, "-"}
+      , {TokenType::PLUS, "+"}
+      , {TokenType::TIMES, "*"}
+      , {TokenType::TIMES, "*"}
+      , {TokenType::DIVIDE, "/"}
+      })
     );
     auto tokenizer = Tokenizer{script};
 
@@ -86,18 +88,12 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When the tokenizer encounters whitespace, a token is not emitted.")
   {
+    using PairType = std::pair<std::string, std::vector<Token>>;
+
     auto [script, tokens] = GENERATE(
-      std::pair("        +\n"s, std::vector({
-        Token(TokenType::PLUS, "+")
-      }))
-    , std::pair("\n\n\n\n\n+\n"s, std::vector({
-        Token(TokenType::PLUS, "+")
-      }))
-    , std::pair("  +\n-\t(\n"s, std::vector({
-        Token(TokenType::PLUS, "+")
-      , Token(TokenType::MINUS, "-")
-      , Token(TokenType::LEFT_PAREN, "(")
-      }))
+      PairType("        +\n", {{TokenType::PLUS, "+"}})
+    , PairType("\n\n\n\n\n+\n", {{TokenType::PLUS, "+"}})
+    , PairType("  +\n-\t(\n", {{TokenType::PLUS, "+"}, {TokenType::MINUS, "-"}, {TokenType::LEFT_PAREN, "("}})
     );
     auto tokenizer = Tokenizer{script};
 
@@ -113,11 +109,10 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When the tokenizer encounters a comment, the remainder of the line is ignored.")
   {
+    using PairType = std::pair<std::string, std::vector<Token>>;
+
     auto [script, expectedTokens] = GENERATE(
-      std::pair<std::string, std::vector<Token>>(
-        "+ # */- This is a comment\n("s
-      , {Token(TokenType::PLUS, "+"), Token(TokenType::LEFT_PAREN, "(")}
-      )
+      PairType{"+ # */- This is a comment\n(", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
     );
 
     auto tokenizer = Tokenizer{script};
