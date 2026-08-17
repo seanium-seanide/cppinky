@@ -123,9 +123,28 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
     REQUIRE(result.size() == expectedTokens.size());
     for (auto [resultToken, expectedToken]: std::views::zip(result, expectedTokens))
     {
-      // TODO: Implement token comparison operator and refactor tests
       REQUIRE(resultToken.type == expectedToken.type);
       REQUIRE(resultToken.lexeme == expectedToken.lexeme);
+    }
+  }
+
+  SECTION("Tokens are stored with the correct line number .")
+  {
+    using ThisPairType = std::pair<std::string, std::vector<Tokenizer::size_type>>;
+
+    auto [script, expectedLineNumbers] = GENERATE(
+      ThisPairType{")\n", {1}}
+    , ThisPairType{"+\n-\n*\n/\n", {1, 2, 3, 4}}
+    , ThisPairType{"+\n-\n\n*\n/\n", {1, 2, 4, 5}}
+    , ThisPairType{"+\n-\n\n*\n/\n\n\n+++\n-", {1, 2, 4, 5, 8, 8, 8, 9}}
+    );
+
+    auto tokenizer = Tokenizer{script};
+    auto result = tokenizer.tokenize();
+
+    for (auto [token, lineNumber]: std::views::zip(result, expectedLineNumbers))
+    {
+      REQUIRE(token.lineNumber == lineNumber);
     }
   }
 }
