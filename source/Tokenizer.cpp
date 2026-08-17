@@ -22,10 +22,9 @@ auto Tokenizer::skipWhitespace() -> void
   }
 }
 
-// TODO: Move to string views?
 auto Tokenizer::addToken(TokenType type) -> void
 {
-  m_tokens.emplace_back(type, m_source.substr(m_startIndex, m_currentIndex - m_startIndex), m_currentLineIndex);
+  m_tokens.emplace_back(type, std::string_view{m_source}.substr(m_startIndex, m_currentIndex - m_startIndex), m_currentLineIndex);
 }
 
 auto Tokenizer::stepOverComment() -> void
@@ -42,9 +41,7 @@ auto Tokenizer::stepOverComment() -> void
   }
 }
 
-// TODO: Move to string views?
-// TODO: Return a read-only view?
-auto Tokenizer::tokenize() -> std::vector<Token>
+auto Tokenizer::tokenize() -> std::span<Token>
 {
   while (m_currentIndex < m_source.size())
   {

@@ -29,11 +29,11 @@ enum class TokenType
 };
 
 
-// TODO: Move out to separate file? (Probably same file as TokenType if at all)
 struct Token
 {
   TokenType type;
-  std::string lexeme;
+  std::string_view lexeme;
+  // TODO: This should be Tokenizer::size_type
   std::size_t lineNumber;
 };
 

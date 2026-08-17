@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <string_view>
+#include <span>
 #include <Token.hpp>
 
 
@@ -17,7 +18,7 @@ public:
 
   Tokenizer(std::string_view source);
 
-  auto tokenize() -> std::vector<Token>;
+  auto tokenize() -> std::span<Token>;
 
 private:
   std::vector<Token> m_tokens{};
