@@ -24,20 +24,6 @@ auto Tokenizer::tokenize() -> std::vector<Token>
     m_startIndex = m_currentIndex;
     auto character = advance();
 
-    /*
-    LEFT_PAREN
-  , RIGHT_PAREN
-  , LEFT_CURLY
-  , RIGHT_CURLY
-  , LEFT_SQUARE
-  , RIGHT_SQUARE
-  , DOT
-  , COMMA
-  , PLUS
-  , MINUS
-  , TIMES
-  , DIVIDE
-  */
     switch (character)
     {
       case '\n':
