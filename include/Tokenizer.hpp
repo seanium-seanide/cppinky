@@ -8,7 +8,7 @@
 #include <TokenizerTypes.hpp>
 
 
-namespace cppinky
+namespace pinky
 {
 
 class Tokenizer

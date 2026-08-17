@@ -1,7 +1,7 @@
 #include <Token.hpp>
 
 
-namespace cppinky
+namespace pinky
 {
 
 auto operator<<(std::ostream& os, const Token& token) -> std::ostream&

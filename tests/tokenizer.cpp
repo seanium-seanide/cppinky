@@ -7,9 +7,9 @@
 #include <Tokenizer.hpp>
 
 using namespace std::literals;
-using cppinky::Token;
-using cppinky::TokenType;
-using cppinky::Tokenizer;
+using pinky::Token;
+using pinky::TokenType;
+using pinky::Tokenizer;
 using PairType = std::pair<std::string, std::vector<Token>>;
 
 
@@ -130,7 +130,7 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("Tokens are stored with the correct line number .")
   {
-    using ThisPairType = std::pair<std::string, std::vector<cppinky::size_type>>;
+    using ThisPairType = std::pair<std::string, std::vector<pinky::size_type>>;
 
     auto [script, expectedLineNumbers] = GENERATE(
       ThisPairType{")\n", {1}}

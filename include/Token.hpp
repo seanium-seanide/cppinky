@@ -6,7 +6,7 @@
 #include <TokenizerTypes.hpp>
 
 
-namespace cppinky
+namespace pinky
 {
 
 enum class TokenType
@@ -37,7 +37,7 @@ struct Token
   size_type lineNumber;
 };
 
-auto operator<<(std::ostream& os, const cppinky::Token& token) -> std::ostream&;
+auto operator<<(std::ostream& os, const pinky::Token& token) -> std::ostream&;
 
 }
 

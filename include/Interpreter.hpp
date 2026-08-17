@@ -3,7 +3,7 @@
 #include <string>
 
 
-namespace cppinky
+namespace pinky
 {
 
 class Interpreter

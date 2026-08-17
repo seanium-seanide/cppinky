@@ -1,7 +1,7 @@
 #include <Tokenizer.hpp>
 
 
-namespace cppinky
+namespace pinky
 {
 
 Tokenizer::Tokenizer(std::string_view source)

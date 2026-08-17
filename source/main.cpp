@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv)
 {
-  auto interpreter = cppinky::Interpreter(argc, argv);
+  auto interpreter = pinky::Interpreter(argc, argv);
 
   auto result = interpreter.run();
 

@@ -8,7 +8,7 @@
 #include <Tokenizer.hpp>
 
 
-namespace cppinky
+namespace pinky
 {
 
 Interpreter::Interpreter(int argc, char**argv)
