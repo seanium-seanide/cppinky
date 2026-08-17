@@ -40,6 +40,19 @@ auto Tokenizer::tokenize() -> std::vector<Token>
   */
     switch (character)
     {
+      case '\n':
+      {
+        ++m_lineIndex;
+        break;
+      }
+
+      case ' ':
+      case '\r':
+      case '\t':
+      {
+        break;
+      }
+
       case '(':
       {
         addToken(TokenType::LEFT_PAREN);

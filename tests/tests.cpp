@@ -109,4 +109,31 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
       REQUIRE(result.lexeme == token.lexeme);
     }
   }
+
+  SECTION("When the tokenizer encounters whitespace, a token is not emitted.")
+  {
+    auto [script, tokens] = GENERATE(
+      std::pair("        +"s, std::vector({
+        cppinky::Token(cppinky::TokenType::PLUS, "+")
+      }))
+    , std::pair("\n\n\n\n\n+"s, std::vector({
+        cppinky::Token(cppinky::TokenType::PLUS, "+")
+      }))
+    , std::pair("  +\n-\t("s, std::vector({
+        cppinky::Token(cppinky::TokenType::PLUS, "+")
+      , cppinky::Token(cppinky::TokenType::MINUS, "-")
+      , cppinky::Token(cppinky::TokenType::LEFT_PAREN, "(")
+      }))
+    );
+    auto tokenizer = cppinky::Tokenizer(script);
+
+    auto result = tokenizer.tokenize();
+    REQUIRE(result.size() == tokens.size());
+
+    for (auto [result, token]: std::views::zip(result, tokens))
+    {
+      REQUIRE(result.type == token.type);
+      REQUIRE(result.lexeme == token.lexeme);
+    }
+  }
 }

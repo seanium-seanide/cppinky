@@ -24,7 +24,7 @@ private:
   std::string m_source{};
   size_type m_currentIndex{};
   size_type m_startIndex{};
-  //size_type m_currentLine{1};
+  size_type m_lineIndex{1};
 
   auto addToken(TokenType type) -> void;
   auto advance() -> Tokenizer::char_type;
