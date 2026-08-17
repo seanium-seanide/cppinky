@@ -24,7 +24,7 @@ private:
   std::string m_source{};
   size_type m_currentIndex{};
   size_type m_startIndex{};
-  size_type m_lineIndex{1};
+  size_type m_currentLineIndex{1};
 
   auto skipWhitespace() -> void;
   auto addToken(TokenType type) -> void;
