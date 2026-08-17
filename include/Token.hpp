@@ -3,6 +3,7 @@
 #include <ostream>
 #include <fmt/format.h>
 #include <magic_enum/magic_enum.hpp>
+#include <TokenizerTypes.hpp>
 
 
 namespace cppinky
@@ -33,8 +34,7 @@ struct Token
 {
   TokenType type;
   std::string_view lexeme;
-  // TODO: This should be Tokenizer::size_type
-  std::size_t lineNumber;
+  size_type lineNumber;
 };
 
 auto operator<<(std::ostream& os, const cppinky::Token& token) -> std::ostream&;

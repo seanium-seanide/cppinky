@@ -130,7 +130,7 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("Tokens are stored with the correct line number .")
   {
-    using ThisPairType = std::pair<std::string, std::vector<Tokenizer::size_type>>;
+    using ThisPairType = std::pair<std::string, std::vector<cppinky::size_type>>;
 
     auto [script, expectedLineNumbers] = GENERATE(
       ThisPairType{")\n", {1}}

@@ -145,7 +145,7 @@ auto Tokenizer::tokenize() -> std::span<Token>
   return m_tokens;
 }
 
-auto Tokenizer::advance() -> Tokenizer::char_type
+auto Tokenizer::advance() -> char_type
 {
   return m_source[m_currentIndex++];
 }
@@ -155,12 +155,12 @@ auto Tokenizer::current() -> char_type
   return m_source[m_currentIndex];
 }
 
-auto Tokenizer::peek() -> Tokenizer::char_type 
+auto Tokenizer::peek() -> char_type 
 {
   return m_source[m_currentIndex + 1];
 }
 
-auto Tokenizer::match(Tokenizer::char_type expectedChar) -> bool
+auto Tokenizer::match(char_type expectedChar) -> bool
 {
   if (m_currentIndex >= m_source.size())
   {
