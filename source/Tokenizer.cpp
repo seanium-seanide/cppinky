@@ -9,6 +9,19 @@ Tokenizer::Tokenizer(std::string_view source)
 {
 }
 
+auto Tokenizer::skipWhitespace() -> void
+{
+  while (m_currentIndex < m_source.size() && std::isspace(current()))
+  {
+    if (current() == '\n')
+    {
+      ++m_lineIndex;
+    }
+
+    static_cast<void>(advance());
+  }
+}
+
 // TODO: Move to string views?
 auto Tokenizer::addToken(TokenType type) -> void
 {
@@ -21,24 +34,18 @@ auto Tokenizer::tokenize() -> std::vector<Token>
 {
   while (m_currentIndex < m_source.size())
   {
+    skipWhitespace();
+
+    if (m_currentIndex >= m_source.size())
+    {
+      break;
+    }
+
     m_startIndex = m_currentIndex;
     auto character = advance();
 
     switch (character)
     {
-      case '\n':
-      {
-        ++m_lineIndex;
-        break;
-      }
-
-      case ' ':
-      case '\r':
-      case '\t':
-      {
-        break;
-      }
-
       case '(':
       {
         addToken(TokenType::LEFT_PAREN);
@@ -126,6 +133,11 @@ auto Tokenizer::advance() -> Tokenizer::char_type
   return m_source[m_currentIndex++];
 }
 
+auto Tokenizer::current() -> char_type
+{
+  return m_source[m_currentIndex];
+}
+
 auto Tokenizer::peek() -> Tokenizer::char_type 
 {
   return m_source[m_currentIndex + 1];
@@ -133,6 +145,11 @@ auto Tokenizer::peek() -> Tokenizer::char_type
 
 auto Tokenizer::match(Tokenizer::char_type expectedChar) -> bool
 {
+  if (m_currentIndex >= m_source.size())
+  {
+    return false;
+  }
+
   if (m_source[m_currentIndex] != expectedChar)
   {
     return false;

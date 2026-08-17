@@ -26,8 +26,10 @@ private:
   size_type m_startIndex{};
   size_type m_lineIndex{1};
 
+  auto skipWhitespace() -> void;
   auto addToken(TokenType type) -> void;
   auto advance() -> Tokenizer::char_type;
+  auto current() -> char_type;
   auto peek() -> char_type;
   auto match(char_type expectedChar) -> bool;
 };
