@@ -13,6 +13,11 @@ target_sources(utilities_lib
       ${CPPINKY_INCLUDE_DIR}/utilities.hpp
 )
 
+target_link_libraries(utilities_lib
+  PRIVATE
+    fmt::fmt
+)
+
 target_compile_features(utilities_lib
   PRIVATE
     cxx_std_23
@@ -42,18 +47,27 @@ add_library(cppinky_lib)
 target_sources(cppinky_lib
   PRIVATE
     Interpreter.cpp
+    Tokenizer.cpp
+    Token.cpp
 
   PUBLIC FILE_SET HEADERS
     BASE_DIRS
       ${CPPINKY_INCLUDE_DIR}
     FILES
       ${CPPINKY_INCLUDE_DIR}/Interpreter.hpp
+      ${CPPINKY_INCLUDE_DIR}/Tokenizer.hpp
+      ${CPPINKY_INCLUDE_DIR}/Token.hpp
+      ${CPPINKY_INCLUDE_DIR}/Token.tpp
 )
 
 target_link_libraries(cppinky_lib
   PRIVATE
-    fmt::fmt
     argparse::argparse
+    utilities_lib
+
+  PUBLIC
+    fmt::fmt
+    magic_enum
 )
 
 target_compile_features(cppinky_lib

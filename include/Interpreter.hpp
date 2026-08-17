@@ -12,12 +12,13 @@ public:
   Interpreter() = default;
   Interpreter(int argc, char**argv);
 
-  int run();
+  auto run() -> int;
 
 private:
   std::string m_scriptFileName;
+  std::string m_script;
 
-  void parseCommandLineArgs(int argc, char** argv);
+  auto parseCommandLineArgs(int argc, char** argv) -> void;
 };
 
 }

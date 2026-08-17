@@ -1,7 +1,7 @@
 #include <utilities.hpp>
 
 #include <fstream>
-#include <format>
+#include <fmt/format.h>
 #include <filesystem>
 
 
@@ -20,7 +20,7 @@ auto readTextFile(const std::string& filename) -> std::string
   if (!file)
   {
     throw std::runtime_error(
-      std::format(
+      fmt::format(
         "Failed to open file {}. Current directory: {}"
       , filename, std::string{std::filesystem::current_path()}
       )

@@ -17,3 +17,9 @@ FetchContent_Declare(argparse
   URL_HASH  SHA256=9dcb3d8ce0a41b2a48ac8baa54b51a9f1b6a2c52dd374e28cc713bab0568ec98
 )
 FetchContent_MakeAvailable(argparse)
+
+FetchContent_Declare(magic_enum
+  URL       https://github.com/Neargye/magic_enum/releases/download/v0.9.8/magic_enum-v0.9.8.tar.gz
+  URL_HASH  SHA256=88709dc8a9697168a75e039470d73ed0cffbc17567976eb5e096f946a2c0d521
+)
+FetchContent_MakeAvailable(magic_enum)

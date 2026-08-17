@@ -9,6 +9,7 @@ target_link_libraries(cppinky_tests
   PRIVATE
     Catch2::Catch2WithMain
     utilities_lib
+    cppinky_lib
 )
 
 target_compile_features(cppinky_tests

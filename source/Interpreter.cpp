@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <fmt/core.h>
 #include <argparse/argparse.hpp>
+#include <utilities.hpp>
+#include <Tokenizer.hpp>
 
 
 namespace cppinky
@@ -13,14 +15,11 @@ Interpreter::Interpreter(int argc, char**argv)
 {
   parseCommandLineArgs(argc, argv);
 
-  fmt::println("Pinky script: {}", m_scriptFileName);
+  m_script = utilities::readTextFile(m_scriptFileName);
 }
 
-void Interpreter::parseCommandLineArgs(int argc, char** argv)
+auto Interpreter::parseCommandLineArgs(int argc, char** argv) -> void
 {
-  static_cast<void>(argc);
-  static_cast<void>(argv);
-
   argparse::ArgumentParser program("cppinky");
 
   program.add_argument("scriptFileName")
@@ -46,9 +45,17 @@ void Interpreter::parseCommandLineArgs(int argc, char** argv)
   }
 }
 
-int Interpreter::run()
+auto Interpreter::run() -> int
 {
-  return {};
+  auto tokenizer = Tokenizer(m_script);
+  auto tokens = tokenizer.tokenize();
+
+  for (auto& token: tokens)
+  {
+    fmt::println("{}", token);
+  }
+
+  return 0;
 }
 
 }
