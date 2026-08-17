@@ -7,6 +7,9 @@
 #include <Tokenizer.hpp>
 
 using namespace std::literals;
+using cppinky::Token;
+using cppinky::TokenType;
+using cppinky::Tokenizer;
 
 
 TEST_CASE("Tokenizing scripts", "[cppinky]")
@@ -14,7 +17,7 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
   SECTION("When tokenizing an empty script, an empty sequence of tokens is returned.")
   {
     auto script = ""s;
-    auto tokenizer = cppinky::Tokenizer{script};
+    auto tokenizer = Tokenizer{script};
 
     auto result = tokenizer.tokenize();
 
@@ -24,12 +27,12 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
   SECTION("When tokenizing a script containing a single character, a single token is returned.")
   {
     auto [script, expectedTokenType, expectedLexeme] = GENERATE(
-      std::tuple("+", cppinky::TokenType::PLUS, "+")
-    , std::tuple("-", cppinky::TokenType::MINUS, "-")
-    , std::tuple("*", cppinky::TokenType::TIMES, "*")
-    , std::tuple("/", cppinky::TokenType::DIVIDE, "/")
+      std::tuple("+", TokenType::PLUS, "+")
+    , std::tuple("-", TokenType::MINUS, "-")
+    , std::tuple("*", TokenType::TIMES, "*")
+    , std::tuple("/", TokenType::DIVIDE, "/")
     );
-    auto tokenizer = cppinky::Tokenizer{script};
+    auto tokenizer = Tokenizer{script};
 
     auto result = tokenizer.tokenize();
 
@@ -42,34 +45,34 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
   {
     auto [script, tokens] = GENERATE(
       std::pair("()[]{}.,+-*/\n"s, std::vector({
-        cppinky::Token(cppinky::TokenType::LEFT_PAREN, "(")
-      , cppinky::Token(cppinky::TokenType::RIGHT_PAREN, ")")
-      , cppinky::Token(cppinky::TokenType::LEFT_SQUARE, "[")
-      , cppinky::Token(cppinky::TokenType::RIGHT_SQUARE, "]")
-      , cppinky::Token(cppinky::TokenType::LEFT_CURLY, "{")
-      , cppinky::Token(cppinky::TokenType::RIGHT_CURLY, "}")
-      , cppinky::Token(cppinky::TokenType::DOT, ".")
-      , cppinky::Token(cppinky::TokenType::COMMA, ",")
-      , cppinky::Token(cppinky::TokenType::PLUS, "+")
-      , cppinky::Token(cppinky::TokenType::MINUS, "-")
-      , cppinky::Token(cppinky::TokenType::TIMES, "*")
-      , cppinky::Token(cppinky::TokenType::DIVIDE, "/")
+        Token(TokenType::LEFT_PAREN, "(")
+      , Token(TokenType::RIGHT_PAREN, ")")
+      , Token(TokenType::LEFT_SQUARE, "[")
+      , Token(TokenType::RIGHT_SQUARE, "]")
+      , Token(TokenType::LEFT_CURLY, "{")
+      , Token(TokenType::RIGHT_CURLY, "}")
+      , Token(TokenType::DOT, ".")
+      , Token(TokenType::COMMA, ",")
+      , Token(TokenType::PLUS, "+")
+      , Token(TokenType::MINUS, "-")
+      , Token(TokenType::TIMES, "*")
+      , Token(TokenType::DIVIDE, "/")
       }))
     , std::pair("**-+-/-+**/\n", std::vector({
-        cppinky::Token(cppinky::TokenType::TIMES, "*")
-      , cppinky::Token(cppinky::TokenType::TIMES, "*")
-      , cppinky::Token(cppinky::TokenType::MINUS, "-")
-      , cppinky::Token(cppinky::TokenType::PLUS, "+")
-      , cppinky::Token(cppinky::TokenType::MINUS, "-")
-      , cppinky::Token(cppinky::TokenType::DIVIDE, "/")
-      , cppinky::Token(cppinky::TokenType::MINUS, "-")
-      , cppinky::Token(cppinky::TokenType::PLUS, "+")
-      , cppinky::Token(cppinky::TokenType::TIMES, "*")
-      , cppinky::Token(cppinky::TokenType::TIMES, "*")
-      , cppinky::Token(cppinky::TokenType::DIVIDE, "/")
+        Token(TokenType::TIMES, "*")
+      , Token(TokenType::TIMES, "*")
+      , Token(TokenType::MINUS, "-")
+      , Token(TokenType::PLUS, "+")
+      , Token(TokenType::MINUS, "-")
+      , Token(TokenType::DIVIDE, "/")
+      , Token(TokenType::MINUS, "-")
+      , Token(TokenType::PLUS, "+")
+      , Token(TokenType::TIMES, "*")
+      , Token(TokenType::TIMES, "*")
+      , Token(TokenType::DIVIDE, "/")
       }))
     );
-    auto tokenizer = cppinky::Tokenizer{script};
+    auto tokenizer = Tokenizer{script};
 
     auto result = tokenizer.tokenize();
     REQUIRE(result.size() == tokens.size());
@@ -85,18 +88,18 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
   {
     auto [script, tokens] = GENERATE(
       std::pair("        +\n"s, std::vector({
-        cppinky::Token(cppinky::TokenType::PLUS, "+")
+        Token(TokenType::PLUS, "+")
       }))
     , std::pair("\n\n\n\n\n+\n"s, std::vector({
-        cppinky::Token(cppinky::TokenType::PLUS, "+")
+        Token(TokenType::PLUS, "+")
       }))
     , std::pair("  +\n-\t(\n"s, std::vector({
-        cppinky::Token(cppinky::TokenType::PLUS, "+")
-      , cppinky::Token(cppinky::TokenType::MINUS, "-")
-      , cppinky::Token(cppinky::TokenType::LEFT_PAREN, "(")
+        Token(TokenType::PLUS, "+")
+      , Token(TokenType::MINUS, "-")
+      , Token(TokenType::LEFT_PAREN, "(")
       }))
     );
-    auto tokenizer = cppinky::Tokenizer{script};
+    auto tokenizer = Tokenizer{script};
 
     auto result = tokenizer.tokenize();
     REQUIRE(result.size() == tokens.size());
@@ -110,14 +113,14 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When the tokenizer encounters a comment, the remainder of the line is ignored.")
   {
-    auto script = "+ # */- This is a comment\n("s;
+    auto [script, expectedTokens] = GENERATE(
+      std::pair<std::string, std::vector<Token>>(
+        "+ # */- This is a comment\n("s
+      , {Token(TokenType::PLUS, "+"), Token(TokenType::LEFT_PAREN, "(")}
+      )
+    );
 
-    auto expectedTokens = std::vector({
-      cppinky::Token(cppinky::TokenType::PLUS, "+")
-    , cppinky::Token(cppinky::TokenType::LEFT_PAREN, "(")
-    });
-    auto tokenizer = cppinky::Tokenizer{script};
-
+    auto tokenizer = Tokenizer{script};
     auto result = tokenizer.tokenize();
     REQUIRE(result.size() == expectedTokens.size());
     for (auto [resultToken, expectedToken]: std::views::zip(result, expectedTokens))

@@ -46,6 +46,15 @@ auto Tokenizer::tokenize() -> std::vector<Token>
 
     switch (character)
     {
+      case '#':
+      {
+        while ((character = advance()) != '\n')
+        {
+        }
+
+        break;
+      }
+
       case '(':
       {
         addToken(TokenType::LEFT_PAREN);
