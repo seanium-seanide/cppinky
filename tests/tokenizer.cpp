@@ -10,6 +10,7 @@ using namespace std::literals;
 using cppinky::Token;
 using cppinky::TokenType;
 using cppinky::Tokenizer;
+using PairType = std::pair<std::string, std::vector<Token>>;
 
 
 TEST_CASE("Tokenizing scripts", "[cppinky]")
@@ -43,8 +44,6 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When tokenizing a script, the correct sequence of lexemes is returned")
   {
-    using PairType = std::pair<std::string, std::vector<Token>>;
-
     auto [script, tokens] = GENERATE(
       PairType("()[]{}.,+-*/\n", {
         {TokenType::LEFT_PAREN, "("}
@@ -88,8 +87,6 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When the tokenizer encounters whitespace, a token is not emitted.")
   {
-    using PairType = std::pair<std::string, std::vector<Token>>;
-
     auto [script, tokens] = GENERATE(
       PairType("        +\n", {{TokenType::PLUS, "+"}})
     , PairType("\n\n\n\n\n+\n", {{TokenType::PLUS, "+"}})
@@ -109,8 +106,6 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
 
   SECTION("When the tokenizer encounters a comment, the remainder of the line is ignored.")
   {
-    using PairType = std::pair<std::string, std::vector<Token>>;
-
     auto [script, expectedTokens] = GENERATE(
       PairType{"+ # */- This is a comment\n(", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
     );
