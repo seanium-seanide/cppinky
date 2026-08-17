@@ -11,11 +11,19 @@ namespace cppinky
 enum class TokenType
 {
   // Single-character tokens
-  PLUS
+  LEFT_PAREN
+, RIGHT_PAREN
+, LEFT_CURLY
+, RIGHT_CURLY
+, LEFT_SQUARE
+, RIGHT_SQUARE
+, DOT
+, COMMA
+, PLUS
 , MINUS
 , TIMES
 , DIVIDE
-  // Two-character rokens
+  // Two-character tokens
   // Literals
   // Reserved words
 };

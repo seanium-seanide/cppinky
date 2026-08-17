@@ -36,28 +36,6 @@ TEST_CASE("Reading files", "[utilities]")
   }
 }
 
-/*
-class Tokenizer
-{
-public:
-  using char_type = char;
-  using size_type = std::size_t;
-
-  Tokenizer(std::string_view source);
-
-  auto tokenize() -> void;
-  auto advance() -> Tokenizer::char_type;
-  auto peek(int n = 1) -> char_type;
-  auto match(char_type expectedChar) -> bool;
-
-private:
-  std::vector<Token> m_tokens{};
-  std::string m_source{};
-  size_type m_currentIndex{};
-  //size_type m_startIndex{};
-};
-*/
-
 
 TEST_CASE("Tokenizing scripts", "[cppinky]")
 {
@@ -91,8 +69,16 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
   SECTION("When tokenizing a script, the correct sequence of lexemes is returned")
   {
     auto [script, tokens] = GENERATE(
-      std::pair("+-*/"s, std::vector({
-        cppinky::Token(cppinky::TokenType::PLUS, "+")
+      std::pair("()[]{}.,+-*/"s, std::vector({
+        cppinky::Token(cppinky::TokenType::LEFT_PAREN, "(")
+      , cppinky::Token(cppinky::TokenType::RIGHT_PAREN, ")")
+      , cppinky::Token(cppinky::TokenType::LEFT_SQUARE, "[")
+      , cppinky::Token(cppinky::TokenType::RIGHT_SQUARE, "]")
+      , cppinky::Token(cppinky::TokenType::LEFT_CURLY, "{")
+      , cppinky::Token(cppinky::TokenType::RIGHT_CURLY, "}")
+      , cppinky::Token(cppinky::TokenType::DOT, ".")
+      , cppinky::Token(cppinky::TokenType::COMMA, ",")
+      , cppinky::Token(cppinky::TokenType::PLUS, "+")
       , cppinky::Token(cppinky::TokenType::MINUS, "-")
       , cppinky::Token(cppinky::TokenType::TIMES, "*")
       , cppinky::Token(cppinky::TokenType::DIVIDE, "/")

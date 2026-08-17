@@ -24,8 +24,70 @@ auto Tokenizer::tokenize() -> std::vector<Token>
     m_startIndex = m_currentIndex;
     auto character = advance();
 
+    /*
+    LEFT_PAREN
+  , RIGHT_PAREN
+  , LEFT_CURLY
+  , RIGHT_CURLY
+  , LEFT_SQUARE
+  , RIGHT_SQUARE
+  , DOT
+  , COMMA
+  , PLUS
+  , MINUS
+  , TIMES
+  , DIVIDE
+  */
     switch (character)
     {
+      case '(':
+      {
+        addToken(TokenType::LEFT_PAREN);
+        break;
+      }
+
+      case ')':
+      {
+        addToken(TokenType::RIGHT_PAREN);
+        break;
+      }
+
+      case '{':
+      {
+        addToken(TokenType::LEFT_CURLY);
+        break;
+      }
+
+      case '}':
+      {
+        addToken(TokenType::RIGHT_CURLY);
+        break;
+      }
+
+      case '[':
+      {
+        addToken(TokenType::LEFT_SQUARE);
+        break;
+      }
+
+      case ']':
+      {
+        addToken(TokenType::RIGHT_SQUARE);
+        break;
+      }
+
+      case '.':
+      {
+        addToken(TokenType::DOT);
+        break;
+      }
+
+      case ',':
+      {
+        addToken(TokenType::COMMA);
+        break;
+      }
+
       case '+':
       {
         addToken(TokenType::PLUS);
