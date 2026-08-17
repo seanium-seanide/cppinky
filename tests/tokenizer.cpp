@@ -107,7 +107,15 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
   SECTION("When the tokenizer encounters a comment, the remainder of the line is ignored.")
   {
     auto [script, expectedTokens] = GENERATE(
-      PairType{"+ # */- This is a comment\n(", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
+      PairType{"#", {}}
+    , PairType{"#\n", {}}
+    , PairType{"  #  ", {}}
+    , PairType{"  #  \n", {}}
+    , PairType{"- # +", {{TokenType::MINUS, "-"}}}
+    , PairType{"- # +\n", {{TokenType::MINUS, "-"}}}
+    , PairType{"+ # */- This is a comment\n(", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
+    , PairType{"+ # */- This is a comment\n(  # Comment \n", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
+    , PairType{"+ # */- This is a comment\n( *  # Comment / \n", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}, {TokenType::TIMES, "*"}}}
     );
 
     auto tokenizer = Tokenizer{script};
