@@ -135,6 +135,30 @@ auto Tokenizer::tokenize() -> std::span<Token>
         break;
       }
 
+      case '=':
+      {
+        if (match('='))
+        {
+          addToken(TokenType::EQUAL);
+        }
+
+        break;
+      }
+
+      case '<':
+      {
+        if (match('='))
+        {
+          addToken(TokenType::LESS_EQUAL);
+        }
+        else
+        {
+          addToken(TokenType::LESS);
+        }
+
+        break;
+      }
+
       default:
       {
         break;

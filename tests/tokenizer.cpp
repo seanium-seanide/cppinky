@@ -13,7 +13,7 @@ using pinky::Tokenizer;
 using PairType = std::pair<std::string, std::vector<Token>>;
 
 
-TEST_CASE("Tokenizing scripts", "[cppinky]")
+TEST_CASE("Single character tokens", "[cppinky][tokenizer][single]")
 {
   SECTION("When tokenizing an empty script, an empty sequence of tokens is returned.")
   {
@@ -146,5 +146,24 @@ TEST_CASE("Tokenizing scripts", "[cppinky]")
     {
       REQUIRE(token.lineNumber == lineNumber);
     }
+  }
+}
+
+TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
+{
+  SECTION("When the tokenizer encounters a valid two-character token, a token is emitted")
+  {
+    using ThisPairType = std::pair<std::string, Token>;
+    auto [script, token] = GENERATE(
+      ThisPairType{"==", {TokenType::EQUAL, "=="}}
+    , ThisPairType{"<=", {TokenType::LESS_EQUAL, "<="}}
+    );
+
+    auto tokenizer = Tokenizer(script);
+    auto tokens = tokenizer.tokenize();
+
+    REQUIRE(tokens.size() == 1);
+    REQUIRE(tokens.back().type == token.type);
+    REQUIRE(tokens.back().lexeme == token.lexeme);
   }
 }
