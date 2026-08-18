@@ -197,6 +197,10 @@ auto Tokenizer::tokenize() -> std::span<Token>
         {
           addToken(TokenType::ASSIGN);
         }
+        else
+        {
+          invalidToken();
+        }
 
         break;
       }
@@ -223,8 +227,14 @@ auto Tokenizer::current() -> char_type
   return m_source[m_currentIndex];
 }
 
-auto Tokenizer::peek() -> char_type 
+// TODO: Plumb in std::optional
+auto Tokenizer::peek() -> std::optional<char_type>
 {
+  if (m_currentIndex >= m_source.size())
+  {
+    return std::nullopt;
+  }
+
   return m_source[m_currentIndex + 1];
 }
 

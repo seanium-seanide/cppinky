@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 #include <span>
+#include <optional>
 #include <Token.hpp>
 #include <TokenizerTypes.hpp>
 
@@ -30,7 +31,7 @@ private:
   auto addToken(TokenType type) -> void;
   auto advance() -> char_type;
   auto current() -> char_type;
-  auto peek() -> char_type;
+  auto peek() -> std::optional<char_type>;
   auto match(char_type expectedChar) -> bool;
   auto invalidToken() -> void;
 };
