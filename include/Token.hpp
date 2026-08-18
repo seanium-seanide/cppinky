@@ -25,9 +25,14 @@ enum class TokenType
 , TIMES
 , DIVIDE
 , LESS
+, GREATER
+, NOT
   // Two-character tokens
 , EQUAL
 , LESS_EQUAL
+, GREATER_EQUAL
+, NOT_EQUAL
+, ASSIGN
   // Literals
   // Reserved words
 };

@@ -28,10 +28,21 @@ TEST_CASE("Single character tokens", "[cppinky][tokenizer][single]")
   SECTION("When tokenizing a script containing a single character, a single token is returned.")
   {
     auto [script, expectedTokenType, expectedLexeme] = GENERATE(
-      std::tuple("+", TokenType::PLUS, "+")
+      std::tuple("(", TokenType::LEFT_PAREN, "(")
+    , std::tuple(")", TokenType::RIGHT_PAREN, ")")
+    , std::tuple("{", TokenType::LEFT_CURLY, "{")
+    , std::tuple("}", TokenType::RIGHT_CURLY, "}")
+    , std::tuple("[", TokenType::LEFT_SQUARE, "[")
+    , std::tuple("]", TokenType::RIGHT_SQUARE, "]")
+    , std::tuple(".", TokenType::DOT, ".")
+    , std::tuple(",", TokenType::COMMA, ",")
+    , std::tuple("+", TokenType::PLUS, "+")
     , std::tuple("-", TokenType::MINUS, "-")
     , std::tuple("*", TokenType::TIMES, "*")
     , std::tuple("/", TokenType::DIVIDE, "/")
+    , std::tuple("<", TokenType::LESS, "<")
+    , std::tuple(">", TokenType::GREATER, ">")
+    , std::tuple("~", TokenType::NOT, "~")
     );
     auto tokenizer = Tokenizer{script};
 
