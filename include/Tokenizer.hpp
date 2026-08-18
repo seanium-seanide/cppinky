@@ -32,6 +32,7 @@ private:
   auto current() -> char_type;
   auto peek() -> char_type;
   auto match(char_type expectedChar) -> bool;
+  auto invalidToken() -> void;
 };
 
 }

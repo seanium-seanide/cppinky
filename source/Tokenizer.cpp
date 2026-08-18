@@ -141,6 +141,10 @@ auto Tokenizer::tokenize() -> std::span<Token>
         {
           addToken(TokenType::EQUAL);
         }
+        else
+        {
+          invalidToken();
+        }
 
         break;
       }
@@ -159,8 +163,48 @@ auto Tokenizer::tokenize() -> std::span<Token>
         break;
       }
 
+      case '>':
+      {
+        if (match('='))
+        {
+          addToken(TokenType::GREATER_EQUAL);
+        }
+        else
+        {
+          addToken(TokenType::GREATER);
+        }
+
+        break;
+      }
+
+      case '~':
+      {
+        if (match('='))
+        {
+          addToken(TokenType::NOT_EQUAL);
+        }
+        else
+        {
+          addToken(TokenType::NOT);
+        }
+
+        break;
+      }
+
+      case ':':
+      {
+        if (match('='))
+        {
+          addToken(TokenType::ASSIGN);
+        }
+
+        break;
+      }
+
       default:
       {
+        invalidToken();
+
         break;
       }
     }
@@ -198,6 +242,11 @@ auto Tokenizer::match(char_type expectedChar) -> bool
 
   ++m_currentIndex;
   return true;
+}
+
+auto Tokenizer::invalidToken() -> void
+{
+  throw std::runtime_error("Invalid token");
 }
 
 }

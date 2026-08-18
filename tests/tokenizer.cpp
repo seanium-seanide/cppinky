@@ -168,6 +168,9 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     auto [script, token] = GENERATE(
       ThisPairType{"==", {TokenType::EQUAL, "=="}}
     , ThisPairType{"<=", {TokenType::LESS_EQUAL, "<="}}
+    , ThisPairType{">=", {TokenType::GREATER_EQUAL, ">="}}
+    , ThisPairType{"~=", {TokenType::NOT_EQUAL, "~="}}
+    , ThisPairType{":=", {TokenType::ASSIGN, ":="}}
     );
 
     auto tokenizer = Tokenizer(script);
