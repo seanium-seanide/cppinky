@@ -151,43 +151,19 @@ auto Tokenizer::tokenize() -> std::span<Token>
 
       case '<':
       {
-        if (match('='))
-        {
-          addToken(TokenType::LESS_EQUAL);
-        }
-        else
-        {
-          addToken(TokenType::LESS);
-        }
-
+        addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
         break;
       }
 
       case '>':
       {
-        if (match('='))
-        {
-          addToken(TokenType::GREATER_EQUAL);
-        }
-        else
-        {
-          addToken(TokenType::GREATER);
-        }
-
+        addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
         break;
       }
 
       case '~':
       {
-        if (match('='))
-        {
-          addToken(TokenType::NOT_EQUAL);
-        }
-        else
-        {
-          addToken(TokenType::NOT);
-        }
-
+        addToken(match('=') ? TokenType::NOT_EQUAL : TokenType::NOT);
         break;
       }
 

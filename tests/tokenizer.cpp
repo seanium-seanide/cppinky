@@ -205,9 +205,5 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
       REQUIRE(token.type == result.type);
       REQUIRE(token.lexeme == result.lexeme);
     }
-    /*
-    REQUIRE(result.back().type == token.type);
-    REQUIRE(result.back().lexeme == token.lexeme);
-    */
   }
 }
