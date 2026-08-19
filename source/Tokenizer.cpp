@@ -49,12 +49,20 @@ auto Tokenizer::addTokenWithPredicate(bool predicate, std::optional<TokenType> o
     {
       addToken(opt1.value());
     }
+    else
+    {
+      invalidToken();
+    }
   }
   else
   {
     if (opt2 != std::nullopt)
     {
       addToken(opt2.value());
+    }
+    else
+    {
+      invalidToken();
     }
   }
 }
@@ -155,47 +163,32 @@ auto Tokenizer::tokenize() -> std::span<Token>
 
       case '=':
       {
-        if (match('='))
-        {
-          addToken(TokenType::EQUAL);
-        }
-        else
-        {
-          invalidToken();
-        }
+        addTokenWithPredicate(match('='), TokenType::EQUAL, std::nullopt);
 
         break;
       }
 
       case '<':
       {
-        addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+        addTokenWithPredicate(match('='), TokenType::LESS_EQUAL, TokenType::LESS);
         break;
       }
 
       case '>':
       {
-        addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
+        addTokenWithPredicate(match('='), TokenType::GREATER_EQUAL, TokenType::GREATER);
         break;
       }
 
       case '~':
       {
-        addToken(match('=') ? TokenType::NOT_EQUAL : TokenType::NOT);
+        addTokenWithPredicate(match('='), TokenType::NOT_EQUAL, TokenType::NOT);
         break;
       }
 
       case ':':
       {
-        if (match('='))
-        {
-          addToken(TokenType::ASSIGN);
-        }
-        else
-        {
-          invalidToken();
-        }
-
+        addTokenWithPredicate(match('='), TokenType::ASSIGN, std::nullopt);
         break;
       }
 
@@ -221,7 +214,6 @@ auto Tokenizer::current() -> char_type
   return m_source[m_currentIndex];
 }
 
-// TODO: Plumb in std::optional
 auto Tokenizer::peek() -> std::optional<char_type>
 {
   if (m_currentIndex >= m_source.size())
