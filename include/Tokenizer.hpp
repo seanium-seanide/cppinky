@@ -17,7 +17,7 @@ class Tokenizer
 public:
   Tokenizer(std::string_view source);
 
-  [[nodiscard]] auto tokenize() -> std::span<Token>;
+  [[nodiscard]] auto tokenize() -> std::span<const Token>;
 
 private:
   std::vector<Token> m_tokens{};

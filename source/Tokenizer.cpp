@@ -67,7 +67,7 @@ auto Tokenizer::addTokenWithPredicate(bool predicate, std::optional<TokenType> o
   }
 }
 
-auto Tokenizer::tokenize() -> std::span<Token>
+auto Tokenizer::tokenize() -> std::span<const Token>
 {
   while (m_currentIndex < m_source.size())
   {

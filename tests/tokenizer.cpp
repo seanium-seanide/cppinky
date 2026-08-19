@@ -226,4 +226,6 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
 
     REQUIRE_THROWS_WITH(tokenizer.tokenize(), Catch::Matchers::ContainsSubstring("Invalid token"));
   }
+
+  //TODO: Add tests to ensure one cannot walk off the end of the source text buffer
 }
