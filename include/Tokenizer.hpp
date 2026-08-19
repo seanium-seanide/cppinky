@@ -26,6 +26,7 @@ private:
   size_type m_startIndex{};
   size_type m_currentLineIndex{1};
 
+  auto addTokenWithPredicate(bool predicate, std::optional<TokenType> opt1, std::optional<TokenType> opt2) -> void;
   auto skipWhitespace() -> void;
   auto stepOverComment() -> void;
   auto addToken(TokenType type) -> void;

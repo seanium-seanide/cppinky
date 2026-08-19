@@ -41,6 +41,24 @@ auto Tokenizer::stepOverComment() -> void
   }
 }
 
+auto Tokenizer::addTokenWithPredicate(bool predicate, std::optional<TokenType> opt1, std::optional<TokenType> opt2) -> void
+{
+  if (predicate)
+  {
+    if (opt1 != std::nullopt)
+    {
+      addToken(opt1.value());
+    }
+  }
+  else
+  {
+    if (opt2 != std::nullopt)
+    {
+      addToken(opt2.value());
+    }
+  }
+}
+
 auto Tokenizer::tokenize() -> std::span<Token>
 {
   while (m_currentIndex < m_source.size())
