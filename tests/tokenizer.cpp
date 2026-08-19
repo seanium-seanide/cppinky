@@ -1,7 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <vector>
+#include <stdexcept>
 #include <ranges>
 #include <utilities.hpp>
 #include <Tokenizer.hpp>
@@ -205,5 +207,23 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
       REQUIRE(token.type == result.type);
       REQUIRE(token.lexeme == result.lexeme);
     }
+  }
+
+  SECTION("When the tokenizer encounters a partial match for a two-character token, an exception is thrown")
+  {
+    auto script = "=";
+
+    auto tokenizer = Tokenizer(script);
+
+    REQUIRE_THROWS_AS(tokenizer.tokenize(), std::runtime_error);
+  }
+
+  SECTION("When the tokenizer encounters a partial match for a two-character token, an exception for an invalid token is thrown")
+  {
+    auto script = "=";
+
+    auto tokenizer = Tokenizer(script);
+
+    REQUIRE_THROWS_WITH(tokenizer.tokenize(), Catch::Matchers::ContainsSubstring("Invalid token"));
   }
 }
