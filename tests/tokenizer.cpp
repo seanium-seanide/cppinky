@@ -180,4 +180,34 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     REQUIRE(tokens.back().type == token.type);
     REQUIRE(tokens.back().lexeme == token.lexeme);
   }
+
+  SECTION("When the tokenizer encounters many tokens two-character tokens, many tokens are emitted")
+  {
+    auto [script, expectedTokens] = GENERATE(
+     PairType{"== ~= <= >= :=\n"
+     , { {TokenType::EQUAL, "=="},         {TokenType::NOT_EQUAL, "~="}, {TokenType::LESS_EQUAL, "<="}
+       , {TokenType::GREATER_EQUAL, ">="}, {TokenType::ASSIGN, ":="}}
+     }
+     , PairType{"== ~= \n" 
+                "<= >= # ~= !=\n"
+                " :=\n"
+     , { {TokenType::EQUAL, "=="},         {TokenType::NOT_EQUAL, "~="}, {TokenType::LESS_EQUAL, "<="}
+       , {TokenType::GREATER_EQUAL, ">="}, {TokenType::ASSIGN, ":="}}
+     }
+    );
+
+    auto tokenizer = Tokenizer(script);
+    auto results = tokenizer.tokenize();
+
+    REQUIRE(results.size() == expectedTokens.size());
+    for (auto [token, result]: std::views::zip(expectedTokens, results))
+    {
+      REQUIRE(token.type == result.type);
+      REQUIRE(token.lexeme == result.lexeme);
+    }
+    /*
+    REQUIRE(result.back().type == token.type);
+    REQUIRE(result.back().lexeme == token.lexeme);
+    */
+  }
 }
