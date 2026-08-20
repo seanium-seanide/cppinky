@@ -231,7 +231,6 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
   {
     // digit := '0' | '1' | ... | '9'
     // integer := digit*
-    // float := integer? '.' integer
     auto script = "123";
 
     auto tokenizer = Tokenizer(script);
@@ -240,5 +239,18 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
 
     REQUIRE(tokens.back().type == TokenType::NUMBER);
     REQUIRE(tokens.back().lexeme == "123");
+  }
+
+  SECTION("When floating-point lexeme is encountered, the corresponding token is emitted")
+  {
+    // float := integer? '.' integer
+    auto script = "123.456";
+
+    auto tokenizer = Tokenizer(script);
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == 1);
+
+    REQUIRE(tokens.back().type == TokenType::NUMBER);
+    REQUIRE(tokens.back().lexeme == "123.456");
   }
 }
