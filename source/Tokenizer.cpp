@@ -194,10 +194,26 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
       default:
       {
-        invalidToken();
+        if (std::isdigit(character))
+        {
+          while (std::isdigit(character))
+          {
+            character = advance();
+          }
+
+          addToken(TokenType::NUMBER);
+        }
+        else
+        {
+          invalidToken();
+        }
 
         break;
       }
+
+      // TODO: Numbers
+      // TODO: Strings
+      // TODO: Identifiers
     }
   }
 

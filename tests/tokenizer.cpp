@@ -98,7 +98,7 @@ TEST_CASE("Single character tokens", "[cppinky][tokenizer][single]")
     }
   }
 
-  SECTION("When the tokenizer encounters whitespace, a token is not emitted.")
+  SECTION("When a whitespace is encountered, a token is not emitted.")
   {
     auto [script, tokens] = GENERATE(
       PairType("        +\n", {{TokenType::PLUS, "+"}})
@@ -117,7 +117,7 @@ TEST_CASE("Single character tokens", "[cppinky][tokenizer][single]")
     }
   }
 
-  SECTION("When the tokenizer encounters a comment, the remainder of the line is ignored.")
+  SECTION("When a comment is encountered, the remainder of the line is ignored.")
   {
     auto [script, expectedTokens] = GENERATE(
       PairType{"#", {}}
@@ -164,7 +164,7 @@ TEST_CASE("Single character tokens", "[cppinky][tokenizer][single]")
 
 TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
 {
-  SECTION("When the tokenizer encounters a valid two-character token, a token is emitted")
+  SECTION("When a valid two-character token is encountered, a token is emitted")
   {
     using ThisPairType = std::pair<std::string, Token>;
     auto [script, token] = GENERATE(
@@ -183,7 +183,7 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     REQUIRE(tokens.back().lexeme == token.lexeme);
   }
 
-  SECTION("When the tokenizer encounters many tokens two-character tokens, many tokens are emitted")
+  SECTION("When many tokens two-character tokens are encountered, many tokens are emitted")
   {
     auto [script, expectedTokens] = GENERATE(
      PairType{"== ~= <= >= :=\n"
@@ -209,7 +209,7 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     }
   }
 
-  SECTION("When the tokenizer encounters a partial match for a two-character token, an exception is thrown")
+  SECTION("When a partial match for a two-character token is encountered, an exception is thrown")
   {
     auto script = "=";
 
@@ -218,7 +218,7 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     REQUIRE_THROWS_AS(tokenizer.tokenize(), std::runtime_error);
   }
 
-  SECTION("When the tokenizer encounters a partial match for a two-character token, an exception for an invalid token is thrown")
+  SECTION("When a partial match for a two-character token is encountered, an exception for an invalid token is thrown")
   {
     auto script = "=";
 
@@ -227,5 +227,18 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     REQUIRE_THROWS_WITH(tokenizer.tokenize(), Catch::Matchers::ContainsSubstring("Invalid token"));
   }
 
-  //TODO: Add tests to ensure one cannot walk off the end of the source text buffer
+  SECTION("When an integer lexeme is encountered, the corresponding token is emitted")
+  {
+    // digit := '0' | '1' | ... | '9'
+    // integer := digit*
+    // float := integer? '.' integer
+    auto script = "123";
+
+    auto tokenizer = Tokenizer(script);
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == 1);
+
+    REQUIRE(tokens.back().type == TokenType::NUMBER);
+    REQUIRE(tokens.back().lexeme == "123");
+  }
 }

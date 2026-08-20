@@ -34,6 +34,9 @@ enum class TokenType
 , NOT_EQUAL
 , ASSIGN
   // Literals
+, NUMBER
+, STRING
+, IDENTIFIER
   // Reserved words
 };
 
