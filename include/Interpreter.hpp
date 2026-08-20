@@ -12,7 +12,7 @@ public:
   Interpreter() = default;
   Interpreter(int argc, char**argv);
 
-  [[nodiscard]] auto run() -> int;
+  [[nodiscard]] auto run() const -> int;
 
 private:
   std::string m_scriptFileName;

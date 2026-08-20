@@ -1,17 +1,15 @@
 #include <Interpreter.hpp>
 
-#include <filesystem>
-#include <cstdlib>
-#include <fmt/core.h>
-#include <argparse/argparse.hpp>
-#include <utilities.hpp>
 #include <Tokenizer.hpp>
-
+#include <argparse/argparse.hpp>
+#include <cstdlib>
+#include <filesystem>
+#include <utilities.hpp>
 
 namespace pinky
 {
 
-Interpreter::Interpreter(int argc, char**argv)
+Interpreter::Interpreter(const int argc, char**argv)
 {
   parseCommandLineArgs(argc, argv);
 
@@ -45,10 +43,10 @@ auto Interpreter::parseCommandLineArgs(int argc, char** argv) -> void
   }
 }
 
-auto Interpreter::run() -> int
+auto Interpreter::run() const -> int
 {
   auto tokenizer = Tokenizer(m_script);
-  auto tokens = tokenizer.tokenize();
+  const auto tokens = tokenizer.tokenize();
 
   for (auto& token: tokens)
   {

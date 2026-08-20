@@ -2,11 +2,10 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
-#include <vector>
-#include <stdexcept>
-#include <ranges>
-#include <utilities.hpp>
 #include <Tokenizer.hpp>
+#include <ranges>
+#include <stdexcept>
+#include <vector>
 
 using namespace std::literals;
 using pinky::Token;

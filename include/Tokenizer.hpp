@@ -15,7 +15,7 @@ namespace pinky
 class Tokenizer
 {
 public:
-  Tokenizer(std::string_view source);
+  explicit Tokenizer(std::string_view source);
 
   [[nodiscard]] auto tokenize() -> std::span<const Token>;
 
@@ -31,7 +31,7 @@ private:
   auto stepOverComment() -> void;
   auto addToken(TokenType type) -> void;
   auto advance() -> char_type;
-  auto current() -> char_type;
+  auto current() -> std::optional<char_type>;
   auto peek() -> std::optional<char_type>;
   auto match(char_type expectedChar) -> bool;
   auto invalidToken() -> void;

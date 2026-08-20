@@ -11,9 +11,9 @@ Tokenizer::Tokenizer(std::string_view source)
 
 auto Tokenizer::skipWhitespace() -> void
 {
-  while (m_currentIndex < m_source.size() && std::isspace(current()))
+  while (m_currentIndex < m_source.size() && std::isspace(current().value()))
   {
-    if (current() == '\n')
+    if (current().value() == '\n')
     {
       ++m_currentLineIndex;
     }
@@ -196,9 +196,19 @@ auto Tokenizer::tokenize() -> std::span<const Token>
       {
         if (std::isdigit(character))
         {
-          while (std::isdigit(character))
+          while (current() != std::nullopt && std::isdigit(current().value()))
           {
-            character = advance();
+            static_cast<void>(advance());
+          }
+
+          if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(peek().value()))
+          {
+            static_cast<void>(advance());
+
+            while (current() != std::nullopt && std::isdigit(current().value()))
+            {
+              static_cast<void>(advance());
+            }
           }
 
           addToken(TokenType::NUMBER);
@@ -225,7 +235,7 @@ auto Tokenizer::advance() -> char_type
   return m_source[m_currentIndex++];
 }
 
-auto Tokenizer::current() -> char_type
+auto Tokenizer::current() -> std::optional<char_type>
 {
   return m_source[m_currentIndex];
 }
