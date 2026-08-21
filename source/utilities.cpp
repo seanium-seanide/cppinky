@@ -58,4 +58,10 @@ auto isalpha(pinky::char_type c) -> bool
   return true;
 }
 
+auto isspace(pinky::char_type c) -> bool
+{
+  static_cast<void>(c);
+  return false;
+}
+
 }

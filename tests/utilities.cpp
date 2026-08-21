@@ -81,6 +81,11 @@ TEST_CASE("Character predicates", "[utilities]")
 
   SECTION("isspace returns true when passed a whitespace character")
   {
+    auto c = ' ';
+
+    auto result = utilities::isspace(c);
+
+    REQUIRE(result == true);
   }
 
   SECTION("isspace returns false when passed a non-whitespace character")
