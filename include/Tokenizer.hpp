@@ -32,10 +32,10 @@ private:
   auto skipWhitespace() -> void;
   auto stepOverComment() -> void;
   auto addToken(TokenType type) -> void;
-  auto advance() -> char_type;
-  auto current() -> std::optional<char_type>;
-  auto peek() -> std::optional<char_type>;
-  auto match(char_type expectedChar) -> bool;
+  [[nodiscard]] auto advance() -> char_type;
+  [[nodiscard]] auto current() -> std::optional<char_type>;
+  [[nodiscard]] auto peek() -> std::optional<char_type>;
+  [[nodiscard]] auto match(char_type expectedChar) -> bool;
   auto invalidToken() -> void;
 };
 

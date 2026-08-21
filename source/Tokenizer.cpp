@@ -200,6 +200,7 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
       default:
       {
+        // TODO: call isdigit utility
         if (std::isdigit(static_cast<unsigned char>(character)))
         {
           scanDigit();
@@ -220,6 +221,23 @@ auto Tokenizer::tokenize() -> std::span<const Token>
   return m_tokens;
 }
 
+auto Tokenizer::scanString() -> void
+{
+  if (current() != std::nullopt && current().value() != '\"')
+  {
+    static_cast<void>(advance());
+    ++m_startIndex;
+  }
+
+  while (current() != std::nullopt && current().value() != '\"')
+  {
+    static_cast<void>(advance());
+  }
+
+  addToken(TokenType::STRING);
+  static_cast<void>(advance());
+}
+
 auto Tokenizer::scanDigit() -> void
 {
   while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
@@ -238,10 +256,6 @@ auto Tokenizer::scanDigit() -> void
   }
 
   addToken(TokenType::NUMBER);
-}
-
-auto Tokenizer::scanString() -> void
-{
 }
 
 auto Tokenizer::advance() -> char_type

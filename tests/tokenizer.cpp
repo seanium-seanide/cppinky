@@ -301,13 +301,22 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
 
   SECTION("When the tokenizer encounters a string, a string token is emitted")
   {
-    auto script = "\"This is a string\"";
+    auto [script, expectedTokens] = GENERATE(
+      PairType{"\"hello\"", {{TokenType::STRING, "hello"}}}
+    , PairType{"\"hello\"\n", {{TokenType::STRING, "hello"}}}
+    , PairType{"\"hello\"\n \"world!\"", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}}}
+    , PairType{"\"hello\"\n \"world!\"\n", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}}}
+    , PairType{"\"hello\"\n \"world!\" \"Bye!\" \n", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}, {TokenType::STRING, "Bye!"}}}
+    );
 
     auto tokenizer = Tokenizer(script);
     auto tokens = tokenizer.tokenize();
-    REQUIRE(tokens.size() == 1);
+    REQUIRE(tokens.size() == expectedTokens.size());
 
-    REQUIRE(tokens.back().type == TokenType::STRING);
-    REQUIRE(tokens.back().lexeme == "This is a string");
+    for (auto [token, expectedToken]: std::views::zip(tokens, expectedTokens))
+    {
+      REQUIRE(token.type == expectedToken.type);
+      REQUIRE(token.lexeme == expectedToken.lexeme);
+    }
   }
 }
