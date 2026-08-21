@@ -3,3 +3,4 @@ build/
 *.swp
 compile_commands.json
 session.vim
+.idea

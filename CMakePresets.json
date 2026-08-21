@@ -16,9 +16,9 @@
     },
     {
       "name": "config-debug-gcc",
-      "displayName": "Configure (debug, clang)",
+      "displayName": "Configure (debug, gcc)",
       "description": "Configure cppinky for building in debug configuration with g++-14",
-      "binaryDir": "${sourceDir}/build/debug/clang",
+      "binaryDir": "${sourceDir}/build/debug/gcc",
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
@@ -36,7 +36,7 @@
     },
     {
       "name": "build-debug-gcc",
-      "displayName": "Build (debug, clang)",
+      "displayName": "Build (debug, gcc)",
       "description": "Build cppinky in debug configuration with g++-14",
       "configurePreset": "config-debug-gcc"
     }
@@ -53,7 +53,7 @@
     },
     {
       "name": "test-debug-gcc",
-      "displayName": "Test (debug, clang)",
+      "displayName": "Test (debug, gcc)",
       "description": "Run unit tests for cppinky built in debug configuration with g++-14",
       "configurePreset": "config-debug-gcc",
       "output": {

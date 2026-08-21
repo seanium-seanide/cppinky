@@ -36,9 +36,9 @@ auto Interpreter::parseCommandLineArgs(int argc, char** argv) -> void
 
   m_scriptFileName = program.get("scriptFileName");
 
-  if (!std::filesystem::exists(m_scriptFileName))
+  if (!std::filesystem::is_regular_file(m_scriptFileName))
   {
-    fmt::println("Error: File {} doesn't exist", m_scriptFileName);
+    fmt::println("Error: {} is not a regular file", m_scriptFileName);
     std::exit(1);
   }
 }

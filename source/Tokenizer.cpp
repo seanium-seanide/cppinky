@@ -11,7 +11,7 @@ Tokenizer::Tokenizer(std::string_view source)
 
 auto Tokenizer::skipWhitespace() -> void
 {
-  while (m_currentIndex < m_source.size() && std::isspace(current().value()))
+  while (m_currentIndex < m_source.size() && std::isspace(static_cast<unsigned char>(current().value())))
   {
     if (current().value() == '\n')
     {
@@ -31,7 +31,7 @@ auto Tokenizer::stepOverComment() -> void
 {
   auto character = char_type{};
 
-  while ((character = advance()) != '\n')
+  while (m_currentIndex < m_source.size() && (character = advance()) != '\n')
   {
   }
 
@@ -194,18 +194,18 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
       default:
       {
-        if (std::isdigit(character))
+        if (std::isdigit(static_cast<unsigned char>(character)))
         {
-          while (current() != std::nullopt && std::isdigit(current().value()))
+          while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
           {
             static_cast<void>(advance());
           }
 
-          if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(peek().value()))
+          if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(static_cast<unsigned char>(peek().value())))
           {
             static_cast<void>(advance());
 
-            while (current() != std::nullopt && std::isdigit(current().value()))
+            while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
             {
               static_cast<void>(advance());
             }
@@ -237,12 +237,17 @@ auto Tokenizer::advance() -> char_type
 
 auto Tokenizer::current() -> std::optional<char_type>
 {
+  if (m_currentIndex >= m_source.size())
+  {
+    return std::nullopt;
+  }
+
   return m_source[m_currentIndex];
 }
 
 auto Tokenizer::peek() -> std::optional<char_type>
 {
-  if (m_currentIndex >= m_source.size())
+  if (m_currentIndex + 1 >= m_source.size())
   {
     return std::nullopt;
   }

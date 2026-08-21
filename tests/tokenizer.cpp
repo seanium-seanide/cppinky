@@ -242,14 +242,60 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
 
   SECTION("When floating-point lexeme is encountered, the corresponding token is emitted")
   {
+    using ThisPairType = std::pair<std::string, Token>;
+
     // float := integer? '.' integer
-    auto script = "123.456";
+    auto [script, output] = GENERATE(
+      ThisPairType{"123.456", {TokenType::NUMBER, "123.456"}}
+    , ThisPairType{"123.456\n", {TokenType::NUMBER, "123.456"}}
+    );
 
     auto tokenizer = Tokenizer(script);
     auto tokens = tokenizer.tokenize();
     REQUIRE(tokens.size() == 1);
 
-    REQUIRE(tokens.back().type == TokenType::NUMBER);
-    REQUIRE(tokens.back().lexeme == "123.456");
+    REQUIRE(tokens.back().type == output.type);
+    REQUIRE(tokens.back().lexeme == output.lexeme);
+  }
+
+  SECTION("When multiple floating-point lexemes are encountered on a single line, all of the corresponding tokens are emitted")
+  {
+    auto [script, output] = GENERATE(
+      PairType{" 123.456     789.123", {{TokenType::NUMBER, "123.456"}, {TokenType::NUMBER, "789.123"}}}
+    , PairType{" 123.456     789.123\n", {{TokenType::NUMBER, "123.456"}, {TokenType::NUMBER, "789.123"}}}
+    );
+
+    auto tokenizer = Tokenizer(script);
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == output.size());
+
+    for (auto [token, expectedToken]: std::views::zip(output, tokens))
+    {
+      REQUIRE(token.type == expectedToken.type);
+      REQUIRE(token.lexeme == expectedToken.lexeme);
+    }
+  }
+
+  SECTION("When floating-point lexemes are encountered on multiple lines, all of the corresponding tokens are emitted")
+  {
+    auto [script, output] = GENERATE(
+      PairType{" 123.456  \n   789.123", {{TokenType::NUMBER, "123.456"}, {TokenType::NUMBER, "789.123"}}}
+    , PairType{" 123.456  \n 1.2  789.123 3.4    \n 5.6"
+      , {
+          {TokenType::NUMBER, "123.456"}, {TokenType::NUMBER, "1.2"}, {TokenType::NUMBER, "789.123"}
+        , {TokenType::NUMBER, "3.4"}, {TokenType::NUMBER, "5.6"}
+        }
+      }
+    );
+
+    auto tokenizer = Tokenizer(script);
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == output.size());
+
+    for (auto [token, expectedToken]: std::views::zip(output, tokens))
+    {
+      REQUIRE(token.type == expectedToken.type);
+      REQUIRE(token.lexeme == expectedToken.lexeme);
+    }
   }
 }
