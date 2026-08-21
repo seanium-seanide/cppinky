@@ -11,6 +11,7 @@ target_sources(utilities_lib
       ${CPPINKY_INCLUDE_DIR}
     FILES
       ${CPPINKY_INCLUDE_DIR}/utilities.hpp
+      ${CPPINKY_INCLUDE_DIR}/TokenizerTypes.hpp
 )
 
 target_link_libraries(utilities_lib
@@ -58,6 +59,7 @@ target_sources(cppinky_lib
       ${CPPINKY_INCLUDE_DIR}/Tokenizer.hpp
       ${CPPINKY_INCLUDE_DIR}/Token.hpp
       ${CPPINKY_INCLUDE_DIR}/Token.tpp
+      ${CPPINKY_INCLUDE_DIR}/utilities.hpp
 )
 
 target_link_libraries(cppinky_lib

@@ -1,4 +1,5 @@
 #include <Tokenizer.hpp>
+#include <utilities.hpp>
 
 
 namespace pinky
@@ -11,6 +12,7 @@ Tokenizer::Tokenizer(std::string_view source)
 
 auto Tokenizer::skipWhitespace() -> void
 {
+  // TODO: Replace use of std::isspace with utilities::isspace
   while (m_currentIndex < m_source.size() && std::isspace(static_cast<unsigned char>(current().value())))
   {
     if (current().value() == '\n')
@@ -200,8 +202,7 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
       default:
       {
-        // TODO: call isdigit utility
-        if (std::isdigit(static_cast<unsigned char>(character)))
+        if (utilities::isdigit(character))
         {
           scanDigit();
         }
@@ -240,16 +241,16 @@ auto Tokenizer::scanString() -> void
 
 auto Tokenizer::scanDigit() -> void
 {
-  while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
+  while (current() != std::nullopt && std::isdigit(current().value()))
   {
     static_cast<void>(advance());
   }
 
-  if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(static_cast<unsigned char>(peek().value())))
+  if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(peek().value()))
   {
     static_cast<void>(advance());
 
-    while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
+    while (current() != std::nullopt && std::isdigit(current().value()))
     {
       static_cast<void>(advance());
     }

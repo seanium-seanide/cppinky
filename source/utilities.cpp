@@ -34,4 +34,28 @@ auto readTextFile(const std::string& filename) -> std::string
   return script;
 }
 
+auto isdigit(pinky::char_type c) -> bool
+{
+  auto character = static_cast<unsigned char>(c);
+
+  if (character < '0' || character > '9')
+  {
+    return false;
+  }
+
+  return true;
+}
+
+auto isalpha(pinky::char_type c) -> bool
+{
+  auto character = static_cast<unsigned char>(c);
+
+  if (!(character >= 'A' && character <= 'Z') && !(character >= 'a' && character <= 'z') && character != '_')
+  {
+    return false;
+  }
+
+  return true;
+}
+
 }
