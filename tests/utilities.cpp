@@ -78,6 +78,27 @@ TEST_CASE("Character predicates", "[utilities]")
     REQUIRE(result == false);
   }
 
+  SECTION("isalnum returns true when passed an alphanumeric character")
+  {
+    auto c = GENERATE(range<char>('A', 'Z' + 1), range<char>('a', 'z' + 1), '_', range<char>('0', '9' + 1));
+
+    auto result = utilities::isalnum(c);
+
+    REQUIRE(result == true);
+  }
+
+  SECTION("isalnum returns false when passed a non-alphanumeric character")
+  {
+    auto c = GENERATE(
+      range<int>(0, '0')      , range<int>('9' + 1, 'A'), range<int>('Z' + 1, '_')
+    , range<int>('_' + 1, 'a'), range<int>('z' + 1, 256)
+    );
+
+    auto result = utilities::isalnum(c);
+
+    REQUIRE(result == false);
+  }
+
   SECTION("isspace returns true when passed a whitespace character")
   {
     auto c = GENERATE(' ', '\f', '\n', '\r', '\t', '\v');

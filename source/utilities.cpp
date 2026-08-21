@@ -83,4 +83,9 @@ auto isspace(pinky::char_type c) -> bool
   }
 }
 
+auto isalnum(pinky::char_type c) -> bool
+{
+  return isalpha(c) || isdigit(c);
+}
+
 }
