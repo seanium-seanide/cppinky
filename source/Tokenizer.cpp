@@ -206,6 +206,11 @@ auto Tokenizer::tokenize() -> std::span<const Token>
         {
           scanDigit();
         }
+        else if(utilities::isalpha(character))
+        {
+          // TODO: Identifiers
+          scanIdentifier();
+        }
         else
         {
           invalidToken();
@@ -213,12 +218,14 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
         break;
       }
-
-      // TODO: Identifiers
     }
   }
 
   return m_tokens;
+}
+
+auto Tokenizer::scanIdentifier() -> void
+{
 }
 
 auto Tokenizer::scanString(char_type delimiter) -> void

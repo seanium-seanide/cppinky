@@ -225,7 +225,10 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
 
     REQUIRE_THROWS_WITH(tokenizer.tokenize(), Catch::Matchers::ContainsSubstring("Invalid token"));
   }
+}
 
+TEST_CASE("General tokens", "[cppinky][tokenizer][general]")
+{
   SECTION("When an integer lexeme is encountered, the corresponding token is emitted")
   {
     // digit := '0' | '1' | ... | '9'
@@ -323,5 +326,17 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
       REQUIRE(token.type == expectedToken.type);
       REQUIRE(token.lexeme == expectedToken.lexeme);
     }
+  }
+
+  SECTION("When the tokenizer encounters an identifier, a string token is emitted")
+  {
+    auto script = "hello";
+
+    auto tokenizer = Tokenizer{script};
+    auto result = tokenizer.tokenize();
+    REQUIRE(result.size() == 1);
+
+    REQUIRE(result.back().type == TokenType::IDENTIFIER);
+    REQUIRE(result.back().lexeme == "hello");
   }
 }

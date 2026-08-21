@@ -26,6 +26,7 @@ private:
   size_type m_startIndex{};
   size_type m_currentLineIndex{1};
 
+  auto scanIdentifier() -> void;
   auto scanDigit() -> void;
   auto scanString(char_type delimiter) -> void;
   auto addTokenWithPredicate(bool predicate, std::optional<TokenType> opt1, std::optional<TokenType> opt2) -> void;
