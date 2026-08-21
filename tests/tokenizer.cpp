@@ -330,13 +330,43 @@ TEST_CASE("General tokens", "[cppinky][tokenizer][general]")
 
   SECTION("When the tokenizer encounters an identifier, a string token is emitted")
   {
-    auto script = "hello";
+    auto [script, expectedToken] = GENERATE(
+      std::pair<std::string, Token>{"hello", {TokenType::IDENTIFIER, "hello"}}
+    , std::pair<std::string, Token>{"hello\n", {TokenType::IDENTIFIER, "hello"}}
+    , std::pair<std::string, Token>{"  hello  ", {TokenType::IDENTIFIER, "hello"}}
+    , std::pair<std::string, Token>{"  hello  \n", {TokenType::IDENTIFIER, "hello"}}
+    , std::pair<std::string, Token>{" _123abc\n", {TokenType::IDENTIFIER, "_123abc"}}
+    );
 
     auto tokenizer = Tokenizer{script};
-    [[maybe_unused]] auto result = tokenizer.tokenize();
-    //REQUIRE(result.size() == 1);
+    auto result = tokenizer.tokenize();
+    REQUIRE(result.size() == 1);
 
-    //REQUIRE(result.back().type == TokenType::IDENTIFIER);
-    //REQUIRE(result.back().lexeme == "hello");
+    REQUIRE(result.back().type == expectedToken.type);
+    REQUIRE(result.back().lexeme == expectedToken.lexeme);
+  }
+
+  SECTION("When the tokenizer encounters identifiers on multiple lines, corresponding tokens are emitted")
+  {
+    auto [script, expectedTokens] = GENERATE(
+      PairType{"hello world", {{TokenType::IDENTIFIER, "hello"}, {TokenType::IDENTIFIER, "world"}}}
+    , PairType{"hello \n world", {{TokenType::IDENTIFIER, "hello"}, {TokenType::IDENTIFIER, "world"}}}
+    , PairType{"hello world \n goodbye world"
+      , {
+          {TokenType::IDENTIFIER, "hello"}, {TokenType::IDENTIFIER, "world"}
+        , {TokenType::IDENTIFIER, "goodbye"}, {TokenType::IDENTIFIER, "world"}
+        }
+      }
+    );
+
+    auto tokenizer = Tokenizer{script};
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == expectedTokens.size());
+
+    for (auto [token, expectedToken]: std::views::zip(tokens, expectedTokens))
+    {
+      REQUIRE(token.type == expectedToken.type);
+      REQUIRE(token.lexeme == expectedToken.lexeme);
+    }
   }
 }

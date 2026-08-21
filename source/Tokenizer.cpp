@@ -208,7 +208,6 @@ auto Tokenizer::tokenize() -> std::span<const Token>
         }
         else if(utilities::isalpha(character))
         {
-          // TODO: Identifiers
           scanIdentifier();
         }
         else
@@ -226,6 +225,12 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
 auto Tokenizer::scanIdentifier() -> void
 {
+  while (current() != std::nullopt && utilities::isalnum(current().value()))
+  {
+    static_cast<void>(advance());
+  }
+
+  addToken(TokenType::IDENTIFIER);
 }
 
 auto Tokenizer::scanString(char_type delimiter) -> void
