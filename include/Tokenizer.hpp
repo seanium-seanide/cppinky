@@ -27,7 +27,7 @@ private:
   size_type m_currentLineIndex{1};
 
   auto scanDigit() -> void;
-  auto scanString() -> void;
+  auto scanString(char_type delimiter) -> void;
   auto addTokenWithPredicate(bool predicate, std::optional<TokenType> opt1, std::optional<TokenType> opt2) -> void;
   auto skipWhitespace() -> void;
   auto stepOverComment() -> void;

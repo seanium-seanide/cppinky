@@ -194,8 +194,9 @@ auto Tokenizer::tokenize() -> std::span<const Token>
       }
 
       case '\"':
+      case '\'':
       {
-        scanString();
+        scanString(character);
         break;
       }
 
@@ -220,15 +221,15 @@ auto Tokenizer::tokenize() -> std::span<const Token>
   return m_tokens;
 }
 
-auto Tokenizer::scanString() -> void
+auto Tokenizer::scanString(char_type delimiter) -> void
 {
-  if (current() != std::nullopt && current().value() != '\"')
+  if (current() != std::nullopt && current().value() != delimiter)
   {
     static_cast<void>(advance());
     ++m_startIndex;
   }
 
-  while (current() != std::nullopt && current().value() != '\"')
+  while (current() != std::nullopt && current().value() != delimiter)
   {
     static_cast<void>(advance());
   }

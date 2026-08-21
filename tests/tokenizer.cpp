@@ -307,6 +307,11 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
     , PairType{"\"hello\"\n \"world!\"", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}}}
     , PairType{"\"hello\"\n \"world!\"\n", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}}}
     , PairType{"\"hello\"\n \"world!\" \"Bye!\" \n", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}, {TokenType::STRING, "Bye!"}}}
+    , PairType{"\'hello\'", {{TokenType::STRING, "hello"}}}
+    , PairType{"\'hello\'\n", {{TokenType::STRING, "hello"}}}
+    , PairType{"\'hello\'\n \'world!\'", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}}}
+    , PairType{"\'hello\'\n \'world!\'\n", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}}}
+    , PairType{"\'hello\'\n \'world!\' \'Bye!\' \n", {{TokenType::STRING, "hello"}, {TokenType::STRING, "world!"}, {TokenType::STRING, "Bye!"}}}
     );
 
     auto tokenizer = Tokenizer(script);
