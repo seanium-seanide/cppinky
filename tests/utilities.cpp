@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
+#include <catch2/generators/catch_generators_adapters.hpp>
 
 #include <sstream>
 #include <utilities.hpp>
@@ -81,7 +82,7 @@ TEST_CASE("Character predicates", "[utilities]")
 
   SECTION("isspace returns true when passed a whitespace character")
   {
-    auto c = ' ';
+    auto c = GENERATE(' ', '\f', '\n', '\r', '\t', '\v');
 
     auto result = utilities::isspace(c);
 
@@ -90,5 +91,18 @@ TEST_CASE("Character predicates", "[utilities]")
 
   SECTION("isspace returns false when passed a non-whitespace character")
   {
+    auto c = GENERATE(
+               filter(
+                 [](int c)
+                 {
+                   return std::string_view{" \f\n\r\t\v"}.find(c) == std::string_view::npos;
+                 }
+               , range(0, 256)
+               )
+             );
+
+    auto result = utilities::isspace(c);
+
+    REQUIRE(result == false);
   }
 }

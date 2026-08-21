@@ -60,8 +60,27 @@ auto isalpha(pinky::char_type c) -> bool
 
 auto isspace(pinky::char_type c) -> bool
 {
-  static_cast<void>(c);
-  return false;
+  auto character = static_cast<unsigned char>(c);
+
+  switch (character)
+  {
+    case ' ':
+    case '\f':
+    case '\n':
+    case '\r':
+    case '\t':
+    case '\v':
+    {
+      return true;
+      break;
+    }
+
+    default:
+    {
+      return false;
+      break;
+    }
+  }
 }
 
 }
