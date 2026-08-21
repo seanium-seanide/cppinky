@@ -12,8 +12,7 @@ Tokenizer::Tokenizer(std::string_view source)
 
 auto Tokenizer::skipWhitespace() -> void
 {
-  // TODO: Replace use of std::isspace with utilities::isspace
-  while (m_currentIndex < m_source.size() && std::isspace(static_cast<unsigned char>(current().value())))
+  while (m_currentIndex < m_source.size() && std::isspace(current().value()))
   {
     if (current().value() == '\n')
     {
@@ -214,7 +213,6 @@ auto Tokenizer::tokenize() -> std::span<const Token>
         break;
       }
 
-      // TODO: Strings
       // TODO: Identifiers
     }
   }

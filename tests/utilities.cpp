@@ -78,8 +78,6 @@ TEST_CASE("Character predicates", "[utilities]")
     REQUIRE(result == false);
   }
 
-  // TODO: Implement isspace tests
-
   SECTION("isspace returns true when passed a whitespace character")
   {
     auto c = GENERATE(' ', '\f', '\n', '\r', '\t', '\v');
