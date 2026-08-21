@@ -298,4 +298,16 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
       REQUIRE(token.lexeme == expectedToken.lexeme);
     }
   }
+
+  SECTION("When the tokenizer encounters a string, a string token is emitted")
+  {
+    auto script = "\"This is a string\"";
+
+    auto tokenizer = Tokenizer(script);
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == 1);
+
+    REQUIRE(tokens.back().type == TokenType::STRING);
+    REQUIRE(tokens.back().lexeme == "This is a string");
+  }
 }

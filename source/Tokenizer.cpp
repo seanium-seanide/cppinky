@@ -192,26 +192,17 @@ auto Tokenizer::tokenize() -> std::span<const Token>
         break;
       }
 
+      case '\"':
+      {
+        scanString();
+        break;
+      }
+
       default:
       {
         if (std::isdigit(static_cast<unsigned char>(character)))
         {
-          while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
-          {
-            static_cast<void>(advance());
-          }
-
-          if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(static_cast<unsigned char>(peek().value())))
-          {
-            static_cast<void>(advance());
-
-            while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
-            {
-              static_cast<void>(advance());
-            }
-          }
-
-          addToken(TokenType::NUMBER);
+          scanDigit();
         }
         else
         {
@@ -221,13 +212,36 @@ auto Tokenizer::tokenize() -> std::span<const Token>
         break;
       }
 
-      // TODO: Numbers
       // TODO: Strings
       // TODO: Identifiers
     }
   }
 
   return m_tokens;
+}
+
+auto Tokenizer::scanDigit() -> void
+{
+  while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
+  {
+    static_cast<void>(advance());
+  }
+
+  if (current() != std::nullopt && current().value() == '.' && peek() != std::nullopt && std::isdigit(static_cast<unsigned char>(peek().value())))
+  {
+    static_cast<void>(advance());
+
+    while (current() != std::nullopt && std::isdigit(static_cast<unsigned char>(current().value())))
+    {
+      static_cast<void>(advance());
+    }
+  }
+
+  addToken(TokenType::NUMBER);
+}
+
+auto Tokenizer::scanString() -> void
+{
 }
 
 auto Tokenizer::advance() -> char_type
