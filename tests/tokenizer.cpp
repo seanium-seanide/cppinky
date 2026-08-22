@@ -119,15 +119,15 @@ TEST_CASE("Single character tokens", "[cppinky][tokenizer][single]")
   SECTION("When a comment is encountered, the remainder of the line is ignored.")
   {
     auto [script, expectedTokens] = GENERATE(
-      PairType{"#", {}}
-    , PairType{"#\n", {}}
-    , PairType{"  #  ", {}}
-    , PairType{"  #  \n", {}}
-    , PairType{"- # +", {{TokenType::MINUS, "-"}}}
-    , PairType{"- # +\n", {{TokenType::MINUS, "-"}}}
-    , PairType{"+ # */- This is a comment\n(", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
-    , PairType{"+ # */- This is a comment\n(  # Comment \n", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
-    , PairType{"+ # */- This is a comment\n( *  # Comment / \n", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}, {TokenType::TIMES, "*"}}}
+      PairType{"--", {}}
+    , PairType{"--\n", {}}
+    , PairType{"  --  ", {}}
+    , PairType{"  --  \n", {}}
+    , PairType{"- -- +", {{TokenType::MINUS, "-"}}}
+    , PairType{"- -- +\n", {{TokenType::MINUS, "-"}}}
+    , PairType{"+ -- */- This is a comment\n(", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
+    , PairType{"+ -- */- This is a comment\n(  -- Comment \n", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}}}
+    , PairType{"+ -- */- This is a comment\n( *  -- Comment / \n", {{TokenType::PLUS, "+"}, {TokenType::LEFT_PAREN, "("}, {TokenType::TIMES, "*"}}}
     );
 
     auto tokenizer = Tokenizer{script};
@@ -190,7 +190,7 @@ TEST_CASE("Two character tokens", "[cppinky][tokenizer][multi]")
        , {TokenType::GREATER_EQUAL, ">="}, {TokenType::ASSIGN, ":="}}
      }
      , PairType{"== ~= \n" 
-                "<= >= # ~= !=\n"
+                "<= >= -- ~= !=\n"
                 " :=\n"
      , { {TokenType::EQUAL, "=="},         {TokenType::NOT_EQUAL, "~="}, {TokenType::LESS_EQUAL, "<="}
        , {TokenType::GREATER_EQUAL, ">="}, {TokenType::ASSIGN, ":="}}
@@ -368,5 +368,23 @@ TEST_CASE("General tokens", "[cppinky][tokenizer][general]")
       REQUIRE(token.type == expectedToken.type);
       REQUIRE(token.lexeme == expectedToken.lexeme);
     }
+  }
+
+  SECTION("When the tokenizer encouners a keyword, the corresponding keyword token is emitted")
+  {
+    using ThisPairType = std::pair<std::string, Token>;
+
+    auto [script, expectedToken] = GENERATE(
+      ThisPairType{"if", {TokenType::KW_IF, "if"}}
+    , ThisPairType{"else", {TokenType::KW_ELSE, "else"}}
+    );
+
+    auto tokenizer = Tokenizer{script};
+    auto tokens = tokenizer.tokenize();
+    REQUIRE(tokens.size() == 1);
+    auto& token = tokens.back();
+
+    REQUIRE(token.type == expectedToken.type); 
+    REQUIRE(token.lexeme == expectedToken.lexeme); 
   }
 }

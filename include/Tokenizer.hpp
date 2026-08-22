@@ -32,6 +32,7 @@ private:
   auto addTokenWithPredicate(bool predicate, std::optional<TokenType> opt1, std::optional<TokenType> opt2) -> void;
   auto skipWhitespace() -> void;
   auto stepOverComment() -> void;
+  auto getLexeme() -> std::string_view const;
   auto addToken(TokenType type) -> void;
   [[nodiscard]] auto advance() -> char_type;
   [[nodiscard]] auto current() -> std::optional<char_type>;

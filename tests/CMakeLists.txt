@@ -15,7 +15,7 @@ target_link_libraries(utilities_tests
 
 target_compile_features(utilities_tests
   PRIVATE
-    cxx_std_23
+    cxx_std_26
 )
 
 target_compile_options(utilities_tests
@@ -55,7 +55,7 @@ target_link_libraries(tokenizer_tests
 
 target_compile_features(tokenizer_tests
   PRIVATE
-    cxx_std_23
+    cxx_std_26
 )
 
 target_compile_options(tokenizer_tests

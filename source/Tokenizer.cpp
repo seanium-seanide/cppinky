@@ -1,4 +1,6 @@
 #include <Tokenizer.hpp>
+
+#include <algorithm>
 #include <utilities.hpp>
 
 
@@ -23,9 +25,14 @@ auto Tokenizer::skipWhitespace() -> void
   }
 }
 
+auto Tokenizer::getLexeme() -> std::string_view const
+{
+  return std::string_view{m_source}.substr(m_startIndex, m_currentIndex - m_startIndex);
+}
+
 auto Tokenizer::addToken(TokenType type) -> void
 {
-  m_tokens.emplace_back(type, std::string_view{m_source}.substr(m_startIndex, m_currentIndex - m_startIndex), m_currentLineIndex);
+  m_tokens.emplace_back(type, getLexeme(), m_currentLineIndex);
 }
 
 auto Tokenizer::stepOverComment() -> void
@@ -84,12 +91,6 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
     switch (character)
     {
-      case '#':
-      {
-        stepOverComment();
-        break;
-      }
-
       case '(':
       {
         addToken(TokenType::LEFT_PAREN);
@@ -146,7 +147,15 @@ auto Tokenizer::tokenize() -> std::span<const Token>
 
       case '-':
       {
-        addToken(TokenType::MINUS);
+        if (match('-'))
+        {
+          stepOverComment();
+        }
+        else
+        {
+          addToken(TokenType::MINUS);
+        }
+
         break;
       }
 
@@ -230,7 +239,24 @@ auto Tokenizer::scanIdentifier() -> void
     static_cast<void>(advance());
   }
 
-  addToken(TokenType::IDENTIFIER);
+  auto name = "KW_"s;
+  std::ranges::transform(
+    getLexeme()
+  , std::back_inserter(name)
+  , [](unsigned char c)
+    {
+      return static_cast<char>(std::toupper(c));
+    }
+  );
+
+  if (auto token = magic_enum::enum_cast<TokenType>(name))
+  {
+    addToken(*token);
+  }
+  else
+  {
+    addToken(TokenType::IDENTIFIER);
+  }
 }
 
 auto Tokenizer::scanString(char_type delimiter) -> void

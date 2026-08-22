@@ -4,6 +4,9 @@
 #include <fmt/format.h>
 #include <magic_enum/magic_enum.hpp>
 #include <TokenizerTypes.hpp>
+#include <unordered_map>
+
+using namespace std::literals;
 
 
 namespace pinky
@@ -38,8 +41,23 @@ enum class TokenType
 , STRING
 , IDENTIFIER
   // Reserved words
+, KW_IF
+, KW_THEN
+, KW_ELSE
+, KW_TRUE
+, KW_FALSE
+, KW_AND
+, KW_OR
+, KW_WHILE
+, KW_DO
+, KW_FOR
+, KW_FUNC
+, KW_END
+, KW_LOCAL
+, KW_PRINT
+, KW_PRINTLN
+, KW_RET
 };
-
 
 struct Token
 {
@@ -47,6 +65,7 @@ struct Token
   std::string_view lexeme;
   size_type lineNumber;
 };
+
 
 auto operator<<(std::ostream& os, const pinky::Token& token) -> std::ostream&;
 

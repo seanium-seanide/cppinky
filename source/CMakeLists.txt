@@ -21,7 +21,7 @@ target_link_libraries(utilities_lib
 
 target_compile_features(utilities_lib
   PRIVATE
-    cxx_std_23
+    cxx_std_26
 )
 
 target_compile_options(utilities_lib
@@ -74,7 +74,7 @@ target_link_libraries(cppinky_lib
 
 target_compile_features(cppinky_lib
   PRIVATE
-    cxx_std_23
+    cxx_std_26
 )
 
 target_compile_options(cppinky_lib
@@ -110,7 +110,7 @@ target_link_libraries(cppinky
 
 target_compile_features(cppinky
   PRIVATE
-    cxx_std_23
+    cxx_std_26
 )
 
 target_compile_options(cppinky
